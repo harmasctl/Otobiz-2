@@ -8,27 +8,27 @@ interface Make {
 const makes: Make[] = [
   {
     name: "BMW",
-    logo: "https://www.freepnglogos.com/uploads/bmw-png-logo/bmw-png-logo-vector-0.png",
+    logo: "https://cdn.worldvectorlogo.com/logos/bmw-2.svg",
   },
   {
     name: "Mercedes",
-    logo: "https://www.freepnglogos.com/uploads/mercedes-logo-png/mercedes-benz-logo-png-transparent-0.png",
+    logo: "https://cdn.worldvectorlogo.com/logos/mercedes-benz-2.svg",
   },
   {
     name: "Audi",
-    logo: "https://www.freepnglogos.com/uploads/audi-logo-png/audi-logo-png-rings-brand-0.png",
+    logo: "https://cdn.worldvectorlogo.com/logos/audi-13.svg",
   },
   {
     name: "Toyota",
-    logo: "https://www.freepnglogos.com/uploads/toyota-logo-png/toyota-logos-brands-10.png",
+    logo: "https://cdn.worldvectorlogo.com/logos/toyota.svg",
   },
   {
     name: "Honda",
-    logo: "https://www.freepnglogos.com/uploads/honda-logo-png/honda-logo-png-0.png",
+    logo: "https://cdn.worldvectorlogo.com/logos/honda.svg",
   },
   {
     name: "VW",
-    logo: "https://www.freepnglogos.com/uploads/vw-png-logo/volkswagen-vw-png-logo-0.png",
+    logo: "https://cdn.worldvectorlogo.com/logos/volkswagen-2.svg",
   },
 ];
 
@@ -57,6 +57,15 @@ export default function MakeSelector({
             src={make.logo}
             alt={make.name}
             className={`w-6 h-6 object-contain ${selectedMake === make.name ? "brightness-0 invert" : ""}`}
+            onError={(e) => {
+              // Fallback to text if image fails to load
+              const target = e.target as HTMLImageElement;
+              target.style.display = "none";
+              target.parentElement?.insertAdjacentHTML(
+                "afterbegin",
+                `<span class="font-semibold text-sm">${make.name[0]}</span>`,
+              );
+            }}
           />
           <span
             className={`text-sm font-medium ${selectedMake === make.name ? "text-white" : ""}`}

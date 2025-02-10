@@ -79,7 +79,7 @@ export default function SearchHero() {
             <Button
               size="lg"
               variant="outline"
-              className="border-white hover:bg-white/10 text-white"
+              className="bg-white text-[#FF0033] hover:bg-gray-100"
             >
               Sell Your Car
             </Button>

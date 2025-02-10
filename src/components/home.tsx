@@ -83,7 +83,7 @@ const mockVehicles = [
       },
     },
     mileage: 0,
-    image: "https://images.unsplash.com/photo-1619767886558-efdc259b6e1b",
+    image: "https://images.unsplash.com/photo-1617788138017-80ad40651399",
     location: "Dakar, Senegal",
     fuelType: "Electric",
     transmission: "Automatic",
@@ -107,7 +107,7 @@ const categories = [
   {
     title: "Electric Vehicles",
     count: 56,
-    image: "https://images.unsplash.com/photo-1619767886558-efdc259b6e1b",
+    image: "https://images.unsplash.com/photo-1617788138017-80ad40651399",
     icon: <Zap className="h-6 w-6 text-white" />,
   },
   {
