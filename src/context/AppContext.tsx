@@ -16,7 +16,7 @@ interface AppContextType extends AuthContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export function AppProvider({ children }: { children: React.ReactNode }) {
+function AppProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -33,15 +33,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       document.documentElement.classList.add("dark");
     }
 
-    // Check for saved user data
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (error) {
-        console.error("Failed to parse saved user:", error);
-      }
-    }
+    // Auto login as admin for testing
+    const adminUser = {
+      id: "1",
+      email: "admin@otobiz.com",
+      name: "Admin User",
+      role: "admin" as const,
+    };
+    setUser(adminUser);
+    localStorage.setItem("user", JSON.stringify(adminUser));
+
     setIsLoading(false);
   }, []);
 
@@ -129,10 +130,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useApp() {
+function useApp() {
   const context = useContext(AppContext);
   if (context === undefined) {
     throw new Error("useApp must be used within an AppProvider");
   }
   return context;
 }
+
+export { AppProvider, useApp };

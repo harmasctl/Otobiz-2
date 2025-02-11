@@ -1,91 +1,89 @@
-import { Route, Routes, Navigate, useParams } from "react-router-dom";
-import VehicleDetails from "./components/vehicles/VehicleDetails";
+import React from "react";
+import { RouteObject } from "react-router-dom";
 import Home from "./components/home";
-import { Vehicle } from "./types/vehicle";
+import Dashboard from "./components/admin/Dashboard";
+import UsersManagement from "./components/admin/UsersManagement";
+import ListingsManagement from "./components/admin/ListingsManagement";
+import AnalyticsDashboard from "./components/admin/AnalyticsDashboard";
+import EmailTemplateEditor from "./components/admin/EmailTemplateEditor";
+import SystemSettingsForm from "./components/admin/SystemSettingsForm";
+import ContentManagement from "./components/admin/ContentManagement";
+import SupportDashboard from "./components/admin/SupportDashboard";
+import AdminGuard from "./components/admin/AdminGuard";
 
-const mockVehicles: Vehicle[] = [
+const routes: RouteObject[] = [
   {
-    id: "1",
-    make: "BMW",
-    model: "3 Series",
-    year: 2024,
-    price: 45000,
-    monthlyPrice: 599,
-    mileage: 0,
-    fuelType: "Hybrid",
-    transmission: "Automatic",
-    engineSize: "2.0L",
-    horsepower: 258,
-    images: [
-      "https://images.unsplash.com/photo-1583121274602-3e2820c69888",
-      "https://images.unsplash.com/photo-1583121274602-3e2820c69888",
-      "https://images.unsplash.com/photo-1583121274602-3e2820c69888",
-    ],
-    features: [
-      "Leather Seats",
-      "Navigation System",
-      "Bluetooth",
-      "Parking Sensors",
-      "Heated Seats",
-      "360 Camera",
-    ],
-    description:
-      "Brand new BMW 3 Series with the latest technology and features.",
-    sellerId: "1",
-    location: "Dakar, Senegal",
-    status: "available",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/admin",
+    element: (
+      <AdminGuard>
+        <Dashboard />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: "/admin/users",
+    element: (
+      <AdminGuard>
+        <UsersManagement />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: "/admin/listings",
+    element: (
+      <AdminGuard>
+        <ListingsManagement />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: "/admin/analytics",
+    element: (
+      <AdminGuard>
+        <AnalyticsDashboard />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: "/admin/email-templates",
+    element: (
+      <AdminGuard>
+        <EmailTemplateEditor />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: "/admin/settings",
+    element: (
+      <AdminGuard>
+        <SystemSettingsForm />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: "/admin/content",
+    element: (
+      <AdminGuard>
+        <ContentManagement />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: "/admin/support",
+    element: (
+      <AdminGuard>
+        <SupportDashboard />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: "/tempobook/*",
+    element: <div />, // This is a placeholder for Tempo's internal routing
   },
 ];
 
-function VehicleDetailsPage() {
-  const { id } = useParams();
-  const vehicle = mockVehicles.find((v) => v.id === id);
-
-  if (!vehicle) {
-    return <div>Vehicle not found</div>;
-  }
-
-  return <VehicleDetails vehicle={vehicle} isOpen={true} onClose={() => {}} />;
-}
-
-import Search from "./pages/search";
-import SellForm from "./components/vehicles/SellForm";
-import Calculator from "./components/finance/Calculator";
-import Dashboard from "./components/admin/Dashboard";
-import { useApp } from "./context/AppContext";
-
-function PrivateRoute({ children }: { children: React.ReactNode }) {
-  const { user, isLoading } = useApp();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!user || user.role !== "admin") {
-    return <Navigate to="/" replace />;
-  }
-
-  return <>{children}</>;
-}
-
-export default function AppRoutes() {
-  return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/search" element={<Search />} />
-      <Route path="/vehicles/:id" element={<VehicleDetailsPage />} />
-      <Route path="/sell" element={<SellForm />} />
-      <Route path="/finance" element={<Calculator />} />
-      <Route
-        path="/admin"
-        element={
-          <PrivateRoute>
-            <Dashboard />
-          </PrivateRoute>
-        }
-      />
-    </Routes>
-  );
-}
+export default routes;
