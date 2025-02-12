@@ -15,19 +15,23 @@ export default function SearchHero() {
   const [selectedMake, setSelectedMake] = useState<string>();
 
   return (
-    <div className="relative bg-[#FF0033] py-24 overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-y-0 w-1/2 bg-black/10 transform -skew-x-12" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent" />
-      </div>
+    <div
+      className="relative py-24 overflow-hidden"
+      style={{
+        background: `linear-gradient(135deg, 
+          #00853f 0%, #00853f 33%, 
+          #fdef42 33%, #fdef42 66%, 
+          #e31b23 66%, #e31b23 100%
+        )`,
+      }}
+    >
       <div className="container relative grid grid-cols-1 lg:grid-cols-[1fr,400px] gap-8 items-center">
         <div className="text-white space-y-6">
           <div>
             <h1 className="text-6xl font-bold mb-4 leading-tight">
               FIND YOUR
               <br />
-              PERFECT <span className="bg-white text-[#FF0033] px-2">CAR</span>
+              PERFECT <span className="bg-white text-[#00853f] px-2">CAR</span>
             </h1>
             <p className="text-xl opacity-90">
               Over 435,926 deals available today
@@ -36,7 +40,7 @@ export default function SearchHero() {
 
           {/* Car Image with Creative Layout */}
           <div className="relative h-[300px] w-full mt-8">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#FF0033]/50 via-transparent to-[#FF0033]/50 z-10" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#00853f]/50 via-transparent to-[#e31b23]/50 z-10" />
             <div className="absolute inset-0 overflow-hidden rounded-xl">
               <div className="relative h-full">
                 <img
@@ -72,14 +76,14 @@ export default function SearchHero() {
           <div className="flex gap-4">
             <Button
               size="lg"
-              className="bg-white text-[#FF0033] hover:bg-gray-100"
+              className="bg-white text-[#00853f] hover:bg-gray-100"
             >
               Browse All Cars
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="bg-white text-[#FF0033] hover:bg-gray-100"
+              className="bg-white text-[#00853f] hover:bg-gray-100"
             >
               Sell Your Car
             </Button>
@@ -106,7 +110,7 @@ export default function SearchHero() {
             </Select>
 
             <div className="grid grid-cols-2 gap-4">
-              <Button className="w-full bg-[#1E1E1E] hover:bg-[#2E2E2E]">
+              <Button className="w-full bg-[#00853f] hover:bg-[#006c32]">
                 Cash
               </Button>
               <Button variant="outline" className="w-full">
@@ -119,16 +123,16 @@ export default function SearchHero() {
               <Input placeholder="Max price" className="bg-gray-50" />
             </div>
 
-            <Button className="w-full bg-[#FF0033] hover:bg-[#E60000] h-12 text-lg">
+            <Button className="w-full bg-[#00853f] hover:bg-[#006c32] h-12 text-lg">
               <Search className="w-5 h-5 mr-2" />
               Search Cars
             </Button>
 
             <div className="flex justify-between text-sm">
-              <Button variant="link" className="text-[#FF0033] p-0 h-auto">
+              <Button variant="link" className="text-[#00853f] p-0 h-auto">
                 Reset filters
               </Button>
-              <Button variant="link" className="text-[#FF0033] p-0 h-auto">
+              <Button variant="link" className="text-[#00853f] p-0 h-auto">
                 Advanced search
               </Button>
             </div>

@@ -1,6 +1,5 @@
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -9,14 +8,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ArrowDown, ArrowUp, Download, Filter } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Filter } from "lucide-react";
 
 interface Transaction {
   id: string;
   date: string;
-  type: "subscription" | "listing" | "boost" | "commission";
+  type: "subscription" | "listing" | "boost";
   amount: number;
-  status: "completed" | "pending" | "failed";
+  status: "completed" | "pending";
   customer: string;
   paymentMethod: string;
 }
@@ -24,7 +24,7 @@ interface Transaction {
 const mockTransactions: Transaction[] = [
   {
     id: "tx_1",
-    date: new Date().toISOString(),
+    date: "2/12/2025, 9:55:09 AM",
     type: "subscription",
     amount: 99.0,
     status: "completed",
@@ -33,7 +33,7 @@ const mockTransactions: Transaction[] = [
   },
   {
     id: "tx_2",
-    date: new Date().toISOString(),
+    date: "2/12/2025, 9:55:09 AM",
     type: "listing",
     amount: 29.99,
     status: "completed",
@@ -42,7 +42,7 @@ const mockTransactions: Transaction[] = [
   },
   {
     id: "tx_3",
-    date: new Date().toISOString(),
+    date: "2/12/2025, 9:55:09 AM",
     type: "boost",
     amount: 49.99,
     status: "pending",
@@ -56,7 +56,7 @@ export default function PaymentAnalytics() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Payment Analytics</h2>
+          <h2 className="text-2xl font-bold">Payment Analytics</h2>
           <p className="text-gray-600">Track and manage payment transactions</p>
         </div>
         <div className="flex items-center gap-4">
@@ -64,48 +64,34 @@ export default function PaymentAnalytics() {
             <Filter className="w-4 h-4 mr-2" />
             Filter
           </Button>
-          <Button variant="outline">
-            <Download className="w-4 h-4 mr-2" />
-            Export
-          </Button>
+          <Button variant="outline">Export</Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-3 gap-6">
         <Card className="p-6">
-          <div className="text-sm text-gray-600 mb-2">
-            Total Revenue (Today)
-          </div>
-          <div className="text-3xl font-bold mb-2">£1,234.56</div>
-          <div className="text-green-600 flex items-center">
-            <ArrowUp className="w-4 h-4 mr-1" />
-            12% from yesterday
+          <div className="text-sm text-gray-600">Total Revenue (Today)</div>
+          <div className="text-3xl font-bold mt-2">£1,234.56</div>
+          <div className="text-sm text-green-600 mt-2">
+            ↑ 12% from yesterday
           </div>
         </Card>
 
         <Card className="p-6">
-          <div className="text-sm text-gray-600 mb-2">
-            Successful Transactions
-          </div>
-          <div className="text-3xl font-bold mb-2">45</div>
-          <div className="text-green-600 flex items-center">
-            <ArrowUp className="w-4 h-4 mr-1" />
-            8% from yesterday
-          </div>
+          <div className="text-sm text-gray-600">Successful Transactions</div>
+          <div className="text-3xl font-bold mt-2">45</div>
+          <div className="text-sm text-green-600 mt-2">↑ 8% from yesterday</div>
         </Card>
 
         <Card className="p-6">
-          <div className="text-sm text-gray-600 mb-2">Failed Transactions</div>
-          <div className="text-3xl font-bold mb-2">2</div>
-          <div className="text-red-600 flex items-center">
-            <ArrowDown className="w-4 h-4 mr-1" />
-            50% from yesterday
-          </div>
+          <div className="text-sm text-gray-600">Failed Transactions</div>
+          <div className="text-3xl font-bold mt-2">2</div>
+          <div className="text-sm text-red-600 mt-2">↓ 50% from yesterday</div>
         </Card>
       </div>
 
       <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-6">Recent Transactions</h3>
+        <h3 className="text-lg font-semibold mb-4">Recent Transactions</h3>
         <Table>
           <TableHeader>
             <TableRow>
@@ -121,20 +107,17 @@ export default function PaymentAnalytics() {
           <TableBody>
             {mockTransactions.map((tx) => (
               <TableRow key={tx.id}>
-                <TableCell className="font-mono text-sm">{tx.id}</TableCell>
-                <TableCell>{new Date(tx.date).toLocaleString()}</TableCell>
-                <TableCell>
-                  <Badge variant="outline">{tx.type}</Badge>
-                </TableCell>
+                <TableCell>{tx.id}</TableCell>
+                <TableCell>{tx.date}</TableCell>
+                <TableCell>{tx.type}</TableCell>
                 <TableCell>£{tx.amount.toFixed(2)}</TableCell>
                 <TableCell>
                   <Badge
-                    variant={
+                    variant={tx.status === "completed" ? "success" : "warning"}
+                    className={
                       tx.status === "completed"
-                        ? "success"
-                        : tx.status === "pending"
-                          ? "warning"
-                          : "destructive"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-yellow-100 text-yellow-800"
                     }
                   >
                     {tx.status}

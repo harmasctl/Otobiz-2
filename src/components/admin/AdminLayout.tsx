@@ -53,7 +53,20 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       {/* Top Navigation */}
-      <header className="fixed top-0 right-0 left-64 h-16 bg-white dark:bg-gray-800 border-b z-30 flex items-center justify-between px-6">
+      <header className="fixed top-0 right-0 left-64 h-16 bg-white/90 backdrop-blur-sm border-b z-30 flex items-center justify-between px-6">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="outline"
+            onClick={() => (window.location.href = "/")}
+            className="bg-white hover:bg-gray-100"
+          >
+            Back to App
+          </Button>
+          <h2 className="text-lg font-semibold">
+            {sidebarItems.find((item) => item.href === location.pathname)
+              ?.label || "Dashboard"}
+          </h2>
+        </div>
         <h2 className="text-lg font-semibold">
           {sidebarItems.find((item) => item.href === location.pathname)
             ?.label || "Dashboard"}
@@ -76,7 +89,7 @@ export default function AdminLayout({
       </header>
 
       {/* Sidebar */}
-      <aside className="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 border-r z-30">
+      <aside className="fixed inset-y-0 left-0 w-64 bg-white/90 backdrop-blur-sm border-r z-30">
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="p-6 border-b">

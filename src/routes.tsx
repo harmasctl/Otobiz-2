@@ -1,16 +1,17 @@
-import React from "react";
 import { RouteObject } from "react-router-dom";
 import Home from "./components/home";
+import Marketplace from "./pages/marketplace";
+import VehicleDetails from "./pages/vehicles/[id]";
+import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./components/admin/Dashboard";
+import AnalyticsDashboard from "./components/admin/AnalyticsDashboard";
 import UsersManagement from "./components/admin/UsersManagement";
 import ListingsManagement from "./components/admin/ListingsManagement";
-import AnalyticsDashboard from "./components/admin/AnalyticsDashboard";
+import ContentManagement from "./components/admin/ContentManagement";
+import SupportDashboard from "./components/admin/SupportDashboard";
 import EmailTemplateEditor from "./components/admin/EmailTemplateEditor";
 import SystemSettingsForm from "./components/admin/SystemSettingsForm";
 import MonetizationDashboard from "./components/admin/MonetizationDashboard";
-import ContentManagement from "./components/admin/ContentManagement";
-import SupportDashboard from "./components/admin/SupportDashboard";
-import AdminGuard from "./components/admin/AdminGuard";
 
 const routes: RouteObject[] = [
   {
@@ -18,80 +19,84 @@ const routes: RouteObject[] = [
     element: <Home />,
   },
   {
+    path: "/marketplace",
+    element: <Marketplace />,
+  },
+  {
+    path: "/vehicles/:id",
+    element: <VehicleDetails />,
+  },
+  {
     path: "/admin",
     element: (
-      <AdminGuard>
+      <AdminLayout>
         <Dashboard />
-      </AdminGuard>
-    ),
-  },
-  {
-    path: "/admin/users",
-    element: (
-      <AdminGuard>
-        <UsersManagement />
-      </AdminGuard>
-    ),
-  },
-  {
-    path: "/admin/listings",
-    element: (
-      <AdminGuard>
-        <ListingsManagement />
-      </AdminGuard>
+      </AdminLayout>
     ),
   },
   {
     path: "/admin/analytics",
     element: (
-      <AdminGuard>
+      <AdminLayout>
         <AnalyticsDashboard />
-      </AdminGuard>
+      </AdminLayout>
     ),
   },
   {
-    path: "/admin/email-templates",
+    path: "/admin/users",
     element: (
-      <AdminGuard>
-        <EmailTemplateEditor />
-      </AdminGuard>
+      <AdminLayout>
+        <UsersManagement />
+      </AdminLayout>
     ),
   },
   {
-    path: "/admin/settings",
+    path: "/admin/listings",
     element: (
-      <AdminGuard>
-        <SystemSettingsForm />
-      </AdminGuard>
+      <AdminLayout>
+        <ListingsManagement />
+      </AdminLayout>
     ),
   },
   {
     path: "/admin/content",
     element: (
-      <AdminGuard>
+      <AdminLayout>
         <ContentManagement />
-      </AdminGuard>
+      </AdminLayout>
     ),
   },
   {
     path: "/admin/support",
     element: (
-      <AdminGuard>
+      <AdminLayout>
         <SupportDashboard />
-      </AdminGuard>
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/admin/email-templates",
+    element: (
+      <AdminLayout>
+        <EmailTemplateEditor />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/admin/settings",
+    element: (
+      <AdminLayout>
+        <SystemSettingsForm />
+      </AdminLayout>
     ),
   },
   {
     path: "/admin/monetization",
     element: (
-      <AdminGuard>
+      <AdminLayout>
         <MonetizationDashboard />
-      </AdminGuard>
+      </AdminLayout>
     ),
-  },
-  {
-    path: "/tempobook/*",
-    element: <div />, // This is a placeholder for Tempo's internal routing
   },
 ];
 

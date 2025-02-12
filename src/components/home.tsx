@@ -1,337 +1,308 @@
 import SearchHero from "./search/SearchHero";
-import VehicleCard from "./vehicles/VehicleCard";
-import CategoryCard from "./categories/CategoryCard";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useApp } from "@/context/AppContext";
-import CompareDrawer from "./vehicles/CompareDrawer";
-import CompareVehicles from "./vehicles/CompareVehicles";
-import { Car, Truck, Zap } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { ArrowRight, Car, Shield, ThumbsUp, Award } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import VehicleCardSimple from "./vehicles/VehicleCardSimple";
+import CategoryBrowser from "./sections/CategoryBrowser";
+import { motion } from "framer-motion";
+import { useVehicleStore } from "@/store/useVehicleStore";
+import { useNavigate } from "react-router-dom";
 
-const mockVehicles = [
-  {
-    id: "1",
-    make: "BMW",
-    model: "3 Series M Sport",
-    year: 2024,
-    price: {
-      cash: 45000,
-      monthly: {
-        amount: 599,
-        deposit: 4500,
-        term: 48,
-      },
-    },
-    mileage: 0,
-    image: "https://images.unsplash.com/photo-1555215695-3004980ad54e",
-    location: "Dakar, Senegal",
-    fuelType: "Hybrid",
-    transmission: "Automatic",
-    condition: "New",
-  },
-  {
-    id: "2",
-    make: "Mercedes",
-    model: "C-Class AMG Line",
-    year: 2024,
-    price: {
-      cash: 52000,
-      monthly: {
-        amount: 699,
-        deposit: 5200,
-        term: 48,
-      },
-    },
-    mileage: 1000,
-    image: "https://images.unsplash.com/photo-1617469767053-d3b523a0b982",
-    location: "Dakar, Senegal",
-    fuelType: "Petrol",
-    transmission: "Automatic",
-    condition: "Used",
-  },
-  {
-    id: "3",
-    make: "Audi",
-    model: "Q5 S-Line",
-    year: 2023,
-    price: {
-      cash: 48000,
-      monthly: {
-        amount: 649,
-        deposit: 4800,
-        term: 48,
-      },
-    },
-    mileage: 5000,
-    image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6",
-    location: "Dakar, Senegal",
-    fuelType: "Diesel",
-    transmission: "Automatic",
-    condition: "Used",
-  },
-  {
-    id: "4",
-    make: "Tesla",
-    model: "Model 3",
-    year: 2024,
-    price: {
-      cash: 55000,
-      monthly: {
-        amount: 749,
-        deposit: 5500,
-        term: 48,
-      },
-    },
-    mileage: 0,
-    image: "https://images.unsplash.com/photo-1617788138017-80ad40651399",
-    location: "Dakar, Senegal",
-    fuelType: "Electric",
-    transmission: "Automatic",
-    condition: "New",
-  },
-];
-
-const categories = [
-  {
-    title: "Luxury Sedans",
-    count: 234,
-    image: "https://images.unsplash.com/photo-1555215695-3004980ad54e",
-    icon: <Car className="h-6 w-6 text-white" />,
-  },
-  {
-    title: "SUVs & Crossovers",
-    count: 189,
-    image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6",
-    icon: <Car className="h-6 w-6 text-white" />,
-  },
-  {
-    title: "Electric Vehicles",
-    count: 56,
-    image: "https://images.unsplash.com/photo-1617788138017-80ad40651399",
-    icon: <Zap className="h-6 w-6 text-white" />,
-  },
-  {
-    title: "Commercial Vehicles",
-    count: 78,
-    image: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7",
-    icon: <Truck className="h-6 w-6 text-white" />,
-  },
-];
-
-function Home() {
-  const {
-    compareVehicles,
-    setCompareVehicles,
-    showCompareDrawer,
-    setShowCompareDrawer,
-    showCompareModal,
-    setShowCompareModal,
-  } = useApp();
-
-  const handleCompare = (vehicle: any) => {
-    if (compareVehicles.length < 3) {
-      setCompareVehicles([...compareVehicles, vehicle]);
-      setShowCompareDrawer(true);
-    }
-  };
-
-  const handleRemoveCompare = (id: string) => {
-    setCompareVehicles(compareVehicles.filter((v) => v.id !== id));
-    if (compareVehicles.length <= 1) {
-      setShowCompareDrawer(false);
-    }
-  };
+export default function Home() {
+  const navigate = useNavigate();
+  const { vehicles, featuredVehicles } = useVehicleStore();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <SearchHero />
 
-      {/* Featured Vehicles */}
-      <section className="container py-12">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h2 className="text-2xl font-bold mb-2">Featured Vehicles</h2>
-            <p className="text-gray-600">Handpicked deals you'll love</p>
+      {/* Featured Listings */}
+      <section className="py-16 bg-white">
+        <div className="container">
+          <div className="flex justify-between items-center mb-12">
+            <h2 className="text-3xl font-bold">Featured Listings</h2>
+            <Button variant="outline" className="group">
+              View All{" "}
+              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
           </div>
-          <Button variant="outline">View all</Button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {mockVehicles.map((vehicle) => (
-            <VehicleCard
-              key={vehicle.id}
-              {...vehicle}
-              onCompare={() => handleCompare(vehicle)}
-            />
-          ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {featuredVehicles.map((vehicle, index) => (
+              <motion.div
+                key={vehicle.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <VehicleCardSimple
+                  id={vehicle.id}
+                  title={`${vehicle.make} ${vehicle.model} ${vehicle.year}`}
+                  price={vehicle.price}
+                  monthlyPayment={vehicle.monthlyPayment}
+                  location={vehicle.location}
+                  year={vehicle.year}
+                  mileage={vehicle.mileage}
+                  fuelType={vehicle.fuelType}
+                  transmission={vehicle.transmission}
+                  image={vehicle.mainImage}
+                  isNew={vehicle.condition === "new"}
+                />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Categories */}
-      <section className="container py-12">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h2 className="text-2xl font-bold mb-2">Browse by Category</h2>
-            <p className="text-gray-600">Find your perfect vehicle type</p>
-          </div>
-          <Button variant="outline">View all categories</Button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map((category, index) => (
-            <CategoryCard key={index} {...category} />
-          ))}
-        </div>
-      </section>
+      <CategoryBrowser />
 
-      {/* Why Choose Us */}
-      <section className="py-16 bg-gradient-to-b from-white to-gray-50">
+      {/* Popular Brands */}
+      <section className="py-16 bg-white">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Choose Otobiz</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Senegal's leading vehicle marketplace platform, providing a
-              seamless experience for buying and selling cars.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Popular Brands
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
             {[
               {
-                icon: "🚗",
-                title: "Extensive Selection",
-                description:
-                  "Access to thousands of verified vehicles from trusted sellers across Senegal",
+                name: "BMW",
+                logo: "https://www.carlogos.org/car-logos/bmw-logo-2020-blue-white.png",
               },
               {
-                icon: "🔒",
-                title: "Secure Transactions",
-                description:
-                  "Safe and transparent buying process with verified sellers and secure payment options",
+                name: "Mercedes",
+                logo: "https://www.carlogos.org/car-logos/mercedes-benz-logo-2011.png",
               },
               {
-                icon: "💬",
-                title: "Direct Communication",
-                description:
-                  "Connect directly with sellers through our built-in chat and calling features",
+                name: "Audi",
+                logo: "https://www.carlogos.org/car-logos/audi-logo-2016.png",
               },
               {
-                icon: "📱",
-                title: "Mobile First",
-                description:
-                  "Access all features on the go with our mobile app for iOS and Android",
+                name: "Toyota",
+                logo: "https://www.carlogos.org/car-logos/toyota-logo-2020-europe.png",
               },
-            ].map((feature, index) => (
-              <div
-                key={index}
-                className="p-6 rounded-xl bg-white shadow-lg hover:shadow-xl transition-all duration-300 group relative overflow-hidden"
+              {
+                name: "Honda",
+                logo: "https://www.carlogos.org/car-logos/honda-logo-2000.png",
+              },
+              {
+                name: "Ford",
+                logo: "https://www.carlogos.org/car-logos/ford-logo-2017.png",
+              },
+            ].map((brand, index) => (
+              <motion.div
+                key={brand.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative z-10">
-                  <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
-                    {feature.icon}
-                  </div>
-                  <h3 className="font-semibold mb-2 text-lg group-hover:text-primary transition-colors duration-300">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm">{feature.description}</p>
-                </div>
-              </div>
+                <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer flex flex-col items-center justify-center">
+                  <img
+                    src={brand.logo}
+                    alt={brand.name}
+                    className="h-12 object-contain mb-4"
+                  />
+                  <h3 className="font-semibold text-center">{brand.name}</h3>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* How It Works */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-gray-50">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">How It Works</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Simple steps to find your perfect vehicle or sell your current
-              one.
+            <p className="text-gray-600">
+              Simple steps to find your perfect vehicle
             </p>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                step: "01",
                 title: "Search & Compare",
                 description:
                   "Browse through our extensive collection of vehicles and compare your favorites",
+                step: "1",
+                icon: Car,
               },
               {
-                step: "02",
                 title: "Connect & Verify",
                 description:
                   "Connect with sellers, verify vehicle details, and schedule viewings",
+                step: "2",
+                icon: Shield,
               },
               {
-                step: "03",
                 title: "Deal & Drive",
                 description:
                   "Complete the transaction securely and drive away in your new vehicle",
+                step: "3",
+                icon: Award,
               },
             ].map((step, index) => (
-              <div
-                key={index}
-                className="relative p-8 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden"
+              <motion.div
+                key={step.title}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
               >
-                <div className="absolute -top-8 -left-8 text-[120px] font-bold text-gray-100 opacity-50 group-hover:opacity-75 transition-all duration-300 group-hover:scale-110">
-                  {step.step}
-                </div>
-                <div className="relative z-10">
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600">{step.description}</p>
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-              </div>
+                <Card className="p-6 text-center hover:shadow-lg transition-shadow relative">
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#00853f] text-white flex items-center justify-center font-bold">
+                    {step.step}
+                  </div>
+                  <step.icon className="w-12 h-12 mx-auto mb-4 text-[#00853f]" />
+                  <h3 className="font-semibold mb-2">{step.title}</h3>
+                  <p className="text-gray-600 text-sm">{step.description}</p>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Newsletter */}
-      <section className="py-16 bg-gray-50">
-        <div className="container text-center max-w-2xl mx-auto">
-          <div className="mb-8">
-            <span className="text-4xl mb-4 block">✉️</span>
-            <h2 className="text-2xl font-bold mb-2">Stay Updated</h2>
+      {/* Customer Reviews */}
+      <section className="py-16 bg-white">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">What Our Customers Say</h2>
             <p className="text-gray-600">
-              Subscribe to our newsletter for the latest car deals, automotive
-              news, and exclusive offers.
+              Trusted by thousands of satisfied customers
             </p>
           </div>
-          <form className="flex gap-4 max-w-md mx-auto">
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1"
-            />
-            <Button type="submit">Subscribe</Button>
-          </form>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "John Smith",
+                role: "Car Buyer",
+                image: "https://api.dicebear.com/7.x/avataaars/svg?seed=1",
+                review:
+                  "Found my dream car within a week. The process was smooth and transparent.",
+                rating: 5,
+              },
+              {
+                name: "Sarah Johnson",
+                role: "Car Seller",
+                image: "https://api.dicebear.com/7.x/avataaars/svg?seed=2",
+                review:
+                  "Sold my car quickly and for a great price. The platform is very user-friendly.",
+                rating: 5,
+              },
+              {
+                name: "Michael Brown",
+                role: "Car Enthusiast",
+                image: "https://api.dicebear.com/7.x/avataaars/svg?seed=3",
+                review:
+                  "Great selection of vehicles and helpful customer service. Highly recommended!",
+                rating: 5,
+              },
+            ].map((review, index) => (
+              <motion.div
+                key={review.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card className="p-6 text-center">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
+                    <img
+                      src={review.image}
+                      alt={review.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="text-yellow-400 flex justify-center gap-1 mb-4">
+                    {Array.from({ length: review.rating }).map((_, i) => (
+                      <span key={i}>★</span>
+                    ))}
+                  </div>
+                  <p className="text-gray-600 mb-4">"{review.review}"</p>
+                  <div className="font-semibold">{review.name}</div>
+                  <div className="text-sm text-gray-600">{review.role}</div>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {showCompareDrawer && (
-        <CompareDrawer
-          vehicles={compareVehicles}
-          onRemove={handleRemoveCompare}
-          onClose={() => setShowCompareDrawer(false)}
-          onCompare={() => {
-            setShowCompareModal(true);
-            setShowCompareDrawer(false);
-          }}
-        />
-      )}
+      {/* Latest News */}
+      <section className="py-16 bg-gray-50">
+        <div className="container">
+          <div className="flex justify-between items-center mb-12">
+            <h2 className="text-3xl font-bold">Latest News</h2>
+            <Button variant="outline" className="group">
+              View All News{" "}
+              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
 
-      {showCompareModal && (
-        <CompareVehicles
-          vehicles={compareVehicles}
-          onClose={() => setShowCompareModal(false)}
-        />
-      )}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Top Electric Vehicles for 2024",
+                image:
+                  "https://images.unsplash.com/photo-1619767886558-efdc7b9e0473",
+                date: "Mar 15, 2024",
+                category: "Electric Vehicles",
+              },
+              {
+                title: "Car Maintenance Tips for Summer",
+                image:
+                  "https://images.unsplash.com/photo-1632823471565-1ec2f1741cd6",
+                date: "Mar 10, 2024",
+                category: "Maintenance",
+              },
+              {
+                title: "Future of Autonomous Driving",
+                image:
+                  "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8",
+                date: "Mar 5, 2024",
+                category: "Technology",
+              },
+            ].map((article, index) => (
+              <motion.div
+                key={article.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card className="overflow-hidden group cursor-pointer">
+                  <div className="aspect-video overflow-hidden">
+                    <img
+                      src={article.image}
+                      alt={article.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-4 mb-4">
+                      <Badge variant="secondary">{article.category}</Badge>
+                      <span className="text-sm text-gray-600">
+                        {article.date}
+                      </span>
+                    </div>
+                    <h3 className="font-semibold text-lg mb-2 group-hover:text-[#00853f] transition-colors">
+                      {article.title}
+                    </h3>
+                    <Button
+                      variant="link"
+                      className="text-[#00853f] p-0 group/btn"
+                    >
+                      Read More
+                      <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                    </Button>
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
-
-export default Home;
