@@ -4,13 +4,15 @@ import App from "./App";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { AppProvider } from "./context/AppContext";
-
 import { TempoDevtools } from "tempo-devtools";
+
 TempoDevtools.init();
 
 const basename = import.meta.env.BASE_URL;
 
-const root = ReactDOM.createRoot(document.getElementById("root")!);
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement,
+);
 
 root.render(
   <React.StrictMode>

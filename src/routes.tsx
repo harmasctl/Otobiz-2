@@ -7,6 +7,7 @@ import ListingsManagement from "./components/admin/ListingsManagement";
 import AnalyticsDashboard from "./components/admin/AnalyticsDashboard";
 import EmailTemplateEditor from "./components/admin/EmailTemplateEditor";
 import SystemSettingsForm from "./components/admin/SystemSettingsForm";
+import MonetizationDashboard from "./components/admin/MonetizationDashboard";
 import ContentManagement from "./components/admin/ContentManagement";
 import SupportDashboard from "./components/admin/SupportDashboard";
 import AdminGuard from "./components/admin/AdminGuard";
@@ -77,6 +78,14 @@ const routes: RouteObject[] = [
     element: (
       <AdminGuard>
         <SupportDashboard />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: "/admin/monetization",
+    element: (
+      <AdminGuard>
+        <MonetizationDashboard />
       </AdminGuard>
     ),
   },

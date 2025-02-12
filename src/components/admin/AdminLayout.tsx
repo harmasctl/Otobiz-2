@@ -33,6 +33,12 @@ const sidebarItems: SidebarItem[] = [
   { icon: MessageSquare, label: "Support", href: "/admin/support", badge: "5" },
   { icon: Mail, label: "Email Templates", href: "/admin/email-templates" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },
+  {
+    icon: BarChart3,
+    label: "Monetization",
+    href: "/admin/monetization",
+    badge: "£",
+  },
 ];
 
 export default function AdminLayout({
