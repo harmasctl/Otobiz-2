@@ -1,141 +1,73 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Card } from "@/components/ui/card";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface VehicleGalleryProps {
-  images: string[];
-  make: string;
-  model: string;
+  images?: string[];
 }
 
-export default function VehicleGallery({
-  images,
-  make,
-  model,
-}: VehicleGalleryProps) {
-  const [selectedImage, setSelectedImage] = useState<string>(images[0]);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showFullscreen, setShowFullscreen] = useState(false);
+export default function VehicleGallery({ images = [] }: VehicleGalleryProps) {
+  const [currentImage, setCurrentImage] = useState(0);
 
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    setSelectedImage(images[(currentImageIndex + 1) % images.length]);
+    setCurrentImage((prev) => (prev + 1) % images.length);
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
-    setSelectedImage(
-      images[(currentImageIndex - 1 + images.length) % images.length],
-    );
+    setCurrentImage((prev) => (prev - 1 + images.length) % images.length);
   };
 
+  if (images.length === 0) {
+    return (
+      <Card className="aspect-video bg-gray-100 flex items-center justify-center">
+        <p className="text-gray-500">No images available</p>
+      </Card>
+    );
+  }
+
   return (
-    <>
-      <div className="space-y-4">
-        <div className="relative group">
-          <div className="aspect-video rounded-lg overflow-hidden bg-gray-100">
-            <img
-              src={selectedImage}
-              alt={`${make} ${model}`}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          </div>
-          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="absolute inset-4 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
-            <Button
-              variant="secondary"
-              size="icon"
+    <div className="space-y-4">
+      <div className="relative aspect-video overflow-hidden rounded-lg">
+        <img
+          src={images[currentImage]}
+          alt={`Vehicle image ${currentImage + 1}`}
+          className="w-full h-full object-cover"
+        />
+        {images.length > 1 && (
+          <>
+            <button
               onClick={prevImage}
-              className="rounded-full bg-white/80 backdrop-blur-sm hover:bg-white"
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 transition-colors"
             >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="secondary"
-              size="icon"
-              onClick={() => setShowFullscreen(true)}
-              className="rounded-full bg-white/80 backdrop-blur-sm hover:bg-white"
-            >
-              <Maximize2 className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="secondary"
-              size="icon"
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
               onClick={nextImage}
-              className="rounded-full bg-white/80 backdrop-blur-sm hover:bg-white"
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 transition-colors"
             >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-        <div className="grid grid-cols-6 gap-2">
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </>
+        )}
+      </div>
+
+      {images.length > 1 && (
+        <div className="grid grid-cols-6 gap-4">
           {images.map((image, index) => (
             <button
               key={index}
-              onClick={() => {
-                setSelectedImage(image);
-                setCurrentImageIndex(index);
-              }}
-              className={`aspect-video rounded-lg overflow-hidden border-2 transition-all ${currentImageIndex === index ? "border-primary ring-2 ring-primary/20" : "border-transparent hover:border-gray-200"}`}
+              onClick={() => setCurrentImage(index)}
+              className={`aspect-video rounded-lg overflow-hidden ${currentImage === index ? "ring-2 ring-primary" : ""}`}
             >
               <img
                 src={image}
-                alt={`${make} ${model} view ${index + 1}`}
+                alt={`Vehicle thumbnail ${index + 1}`}
                 className="w-full h-full object-cover"
               />
             </button>
           ))}
         </div>
-      </div>
-
-      <Dialog open={showFullscreen} onOpenChange={setShowFullscreen}>
-        <DialogContent className="max-w-7xl">
-          <div className="relative aspect-video">
-            <img
-              src={selectedImage}
-              alt={`${make} ${model}`}
-              className="w-full h-full object-contain"
-            />
-            <div className="absolute inset-4 flex items-center justify-between">
-              <Button
-                variant="secondary"
-                size="icon"
-                onClick={prevImage}
-                className="rounded-full bg-white/80 backdrop-blur-sm hover:bg-white"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="secondary"
-                size="icon"
-                onClick={nextImage}
-                className="rounded-full bg-white/80 backdrop-blur-sm hover:bg-white"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-          <div className="grid grid-cols-8 gap-2 mt-4">
-            {images.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setSelectedImage(image);
-                  setCurrentImageIndex(index);
-                }}
-                className={`aspect-video rounded-lg overflow-hidden border-2 transition-all ${currentImageIndex === index ? "border-primary ring-2 ring-primary/20" : "border-transparent hover:border-gray-200"}`}
-              >
-                <img
-                  src={image}
-                  alt={`${make} ${model} view ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </button>
-            ))}
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+      )}
+    </div>
   );
 }

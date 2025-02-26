@@ -1,104 +1,88 @@
+import { Card } from "@/components/ui/card";
 import {
   Car,
-  DoorOpen,
-  Fuel,
+  Calendar,
   Gauge,
-  Info,
-  Palette,
+  Fuel,
   Settings2,
-  Users,
+  Palette,
+  MapPin,
 } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 interface VehicleSpecsProps {
-  specs: {
+  vehicle?: {
+    make: string;
+    model: string;
     year: number;
     mileage: number;
     fuelType: string;
     transmission: string;
-    engineSize: string;
     bodyType?: string;
-    doors?: number;
     color?: string;
-    previousOwners?: number;
-    horsepower?: number;
+    location?: string;
   };
 }
 
-export default function VehicleSpecs({ specs }: VehicleSpecsProps) {
+export default function VehicleSpecs({ vehicle }: VehicleSpecsProps) {
+  if (!vehicle) return null;
+
+  const specs = [
+    {
+      icon: Car,
+      label: "Make & Model",
+      value: `${vehicle.make} ${vehicle.model}`,
+    },
+    {
+      icon: Calendar,
+      label: "Year",
+      value: vehicle.year,
+    },
+    {
+      icon: Gauge,
+      label: "Mileage",
+      value: `${vehicle.mileage.toLocaleString()} mi`,
+    },
+    {
+      icon: Fuel,
+      label: "Fuel Type",
+      value: vehicle.fuelType,
+    },
+    {
+      icon: Settings2,
+      label: "Transmission",
+      value: vehicle.transmission,
+    },
+    {
+      icon: Car,
+      label: "Body Type",
+      value: vehicle.bodyType || "N/A",
+    },
+    {
+      icon: Palette,
+      label: "Color",
+      value: vehicle.color || "N/A",
+    },
+    {
+      icon: MapPin,
+      label: "Location",
+      value: vehicle.location || "N/A",
+    },
+  ];
+
   return (
-    <TooltipProvider>
-      <div className="grid grid-cols-2 gap-4">
-        {[
-          {
-            icon: Gauge,
-            label: "Mileage",
-            value: `${specs.mileage.toLocaleString()} mi`,
-            tooltip: "Total mileage of the vehicle",
-          },
-          {
-            icon: Fuel,
-            label: "Fuel Type",
-            value: specs.fuelType,
-            tooltip: "Type of fuel the vehicle uses",
-          },
-          {
-            icon: Settings2,
-            label: "Transmission",
-            value: specs.transmission,
-            tooltip: "Vehicle transmission type",
-          },
-          {
-            icon: Car,
-            label: "Engine Size",
-            value: specs.engineSize,
-            tooltip: `${specs.horsepower}hp engine capacity`,
-          },
-          specs.bodyType && {
-            icon: Car,
-            label: "Body Type",
-            value: specs.bodyType,
-            tooltip: "Vehicle body style",
-          },
-          specs.doors && {
-            icon: DoorOpen,
-            label: "Doors",
-            value: `${specs.doors} doors`,
-            tooltip: "Number of doors",
-          },
-          specs.color && {
-            icon: Palette,
-            label: "Color",
-            value: specs.color,
-            tooltip: "Exterior color",
-          },
-          specs.previousOwners !== undefined && {
-            icon: Users,
-            label: "Previous Owners",
-            value: specs.previousOwners,
-            tooltip: "Number of previous owners",
-          },
-        ]
-          .filter(Boolean)
-          .map((spec, index) => (
-            <Tooltip key={index}>
-              <TooltipTrigger>
-                <div className="flex flex-col p-4 bg-gray-50 rounded-lg">
-                  <div className="text-sm text-gray-600 mb-1">{spec.label}</div>
-                  <div className="text-base font-medium">{spec.value}</div>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{spec.tooltip}</p>
-              </TooltipContent>
-            </Tooltip>
-          ))}
+    <Card className="p-6">
+      <h2 className="text-xl font-semibold mb-4">Vehicle Specifications</h2>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {specs.map((spec) => (
+          <div key={spec.label} className="flex items-start gap-3">
+            <spec.icon className="w-5 h-5 text-gray-500 mt-0.5" />
+            <div>
+              <div className="text-sm text-gray-600">{spec.label}</div>
+              <div className="font-medium">{spec.value}</div>
+            </div>
+          </div>
+        ))}
       </div>
-    </TooltipProvider>
+    </Card>
   );
 }

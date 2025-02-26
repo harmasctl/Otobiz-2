@@ -28,7 +28,7 @@ const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Overview", href: "/admin" },
   { icon: BarChart3, label: "Analytics", href: "/admin/analytics" },
   { icon: Users, label: "Users", href: "/admin/users" },
-  { icon: Car, label: "Listings", href: "/admin/listings", badge: "12" },
+  { icon: Car, label: "Vehicles", href: "/admin/vehicles", badge: "12" },
   { icon: FileText, label: "Content", href: "/admin/content" },
   { icon: MessageSquare, label: "Support", href: "/admin/support", badge: "5" },
   { icon: Mail, label: "Email Templates", href: "/admin/email-templates" },

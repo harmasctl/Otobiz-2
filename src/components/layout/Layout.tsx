@@ -1,16 +1,10 @@
 import Header from "./Header";
-import Footer from "../sections/Footer";
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-export default function Layout({ children }: LayoutProps) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Header />
-      <main>{children}</main>
-      <Footer />
+      <main className="min-h-[calc(100vh-4rem)]">{children}</main>
     </div>
   );
 }

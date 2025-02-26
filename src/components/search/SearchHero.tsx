@@ -8,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import MakeSelector from "../vehicles/MakeSelector";
 import { Search, MapPin, Car, Gauge } from "lucide-react";
 
 export default function SearchHero() {
@@ -64,7 +63,7 @@ export default function SearchHero() {
                     key={index}
                     className="bg-white/10 backdrop-blur-sm rounded-lg p-3 hover:bg-white/20 transition-colors"
                   >
-                    <stat.icon className="w-5 h-5 mb-2 text-white/80" />
+                    <stat.icon className="h-5 w-5 mb-2 text-white/80" />
                     <div className="text-sm text-white/60">{stat.label}</div>
                     <div className="text-lg font-semibold">{stat.value}</div>
                   </div>
@@ -93,12 +92,17 @@ export default function SearchHero() {
         <div className="bg-white rounded-xl p-6 shadow-2xl w-full">
           <h2 className="text-xl font-semibold mb-6">Quick Search</h2>
           <div className="space-y-6">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <MakeSelector
-                onSelect={setSelectedMake}
-                selectedMake={selectedMake}
-              />
-            </div>
+            <Select>
+              <SelectTrigger className="bg-gray-50">
+                <SelectValue placeholder="Make" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="bmw">BMW</SelectItem>
+                <SelectItem value="mercedes">Mercedes</SelectItem>
+                <SelectItem value="audi">Audi</SelectItem>
+                <SelectItem value="toyota">Toyota</SelectItem>
+              </SelectContent>
+            </Select>
 
             <Select>
               <SelectTrigger className="bg-gray-50">

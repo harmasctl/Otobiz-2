@@ -2,11 +2,36 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useVehicleStore } from "@/store/useVehicleStore";
 
 export default function CategoryBrowser() {
   const navigate = useNavigate();
-  const { categories } = useVehicleStore();
+
+  const categories = [
+    {
+      id: "suv",
+      name: "SUV",
+      image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf",
+      count: 234,
+    },
+    {
+      id: "sedan",
+      name: "Sedan",
+      image: "https://images.unsplash.com/photo-1555215695-3004980ad54e",
+      count: 156,
+    },
+    {
+      id: "electric",
+      name: "Electric",
+      image: "https://images.unsplash.com/photo-1619767886558-efdc7b9e0473",
+      count: 89,
+    },
+    {
+      id: "luxury",
+      name: "Luxury",
+      image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d",
+      count: 123,
+    },
+  ];
 
   return (
     <section className="py-16 bg-gray-50">
@@ -33,7 +58,7 @@ export default function CategoryBrowser() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="relative overflow-hidden rounded-lg group cursor-pointer"
-              onClick={() => navigate(`/marketplace?category=${category.slug}`)}
+              onClick={() => navigate(`/marketplace?category=${category.id}`)}
             >
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent z-10" />
               <img

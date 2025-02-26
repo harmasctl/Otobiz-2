@@ -9,8 +9,6 @@ import {
   Fuel,
   Settings2,
 } from "lucide-react";
-import { Vehicle } from "@/types/vehicle";
-import { useVehicleStore } from "@/store/useVehicleStore";
 import { useNavigate } from "react-router-dom";
 
 type VehicleCardSimpleProps = {
@@ -46,42 +44,15 @@ export default function VehicleCardSimple({
   transmission,
   mainImage,
   image,
-  condition,
   isNew,
   onCompare,
   onChat,
 }: VehicleCardSimpleProps) {
   const navigate = useNavigate();
-  const { addToCompare, compareVehicles, toggleSaved, savedVehicles } =
-    useVehicleStore();
 
   const handleCompare = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (id) {
-      addToCompare({
-        id,
-        title,
-        price,
-        monthlyPayment,
-        location,
-        year,
-        mileage,
-        fuelType,
-        transmission,
-        mainImage: mainImage || image,
-        images: [mainImage || image],
-        status: "available",
-        condition: "used",
-        sellerId: "",
-        sellerType: "private",
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        views: 0,
-        saves: 0,
-      } as Vehicle);
-    } else if (onCompare) {
-      onCompare();
-    }
+    if (onCompare) onCompare();
   };
 
   const handleChat = (e: React.MouseEvent) => {
@@ -92,9 +63,6 @@ export default function VehicleCardSimple({
   const handleClick = () => {
     if (id) navigate(`/vehicles/${id}`);
   };
-
-  const isCompared = id ? compareVehicles.some((v) => v.id === id) : false;
-  const isSaved = id ? savedVehicles.includes(id) : false;
 
   return (
     <Card

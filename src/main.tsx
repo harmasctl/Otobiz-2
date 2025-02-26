@@ -3,10 +3,14 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
-import { AppProvider } from "./context/AppContext";
 import { TempoDevtools } from "tempo-devtools";
+import { insertInitialData } from "./lib/initialData";
+import { AppProvider } from "@/context/AppContext";
 
 TempoDevtools.init();
+
+// Insert initial data
+insertInitialData().catch(console.error);
 
 const basename = import.meta.env.BASE_URL;
 
