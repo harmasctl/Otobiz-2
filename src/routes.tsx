@@ -1,4 +1,7 @@
-import { RouteObject } from "react-router-dom";
+import { RouteObject, Navigate } from "react-router-dom";
+import UserOnboarding from "./components/onboarding/UserOnboarding";
+import SellerOnboarding from "./components/seller/SellerOnboarding";
+import SellerGuard from "./components/guards/SellerGuard";
 import Home from "./pages/Home";
 import Marketplace from "./pages/Marketplace";
 import VehicleDetails from "./pages/VehicleDetails";
@@ -20,18 +23,31 @@ import AuthPage from "./components/auth/AuthPage";
 import AuthCallback from "./pages/auth/callback";
 import ResetPassword from "./pages/auth/reset-password";
 import UserProfile from "./components/user/UserProfile";
+import SettingsPage from "./pages/settings";
 import SellerLayout from "./components/seller/SellerLayout";
 import SellerDashboard from "./components/seller/SellerDashboard";
 import SellerProfile from "./components/seller/SellerProfile";
 
 const routes: RouteObject[] = [
   {
+    path: "/onboarding",
+    element: <UserOnboarding />,
+  },
+  {
+    path: "/seller/onboarding",
+    element: <SellerOnboarding />,
+  },
+  {
     path: "/",
     element: <Home />,
   },
   {
     path: "/seller",
-    element: <SellerLayout />,
+    element: (
+      <SellerGuard>
+        <SellerLayout />
+      </SellerGuard>
+    ),
     children: [
       { path: "", element: <SellerDashboard /> },
       { path: "profile", element: <SellerProfile /> },
@@ -73,6 +89,10 @@ const routes: RouteObject[] = [
   {
     path: "/profile",
     element: <UserProfile />,
+  },
+  {
+    path: "/settings/*",
+    element: <SettingsPage />,
   },
   {
     path: "/admin",

@@ -12,13 +12,6 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
+    storage: localStorage,
   },
-});
-
-// Initialize error handler
-supabase.auth.onAuthStateChange((event, session) => {
-  if (event === "SIGNED_OUT") {
-    // Clear any cached data
-    localStorage.removeItem("supabase.auth.token");
-  }
 });

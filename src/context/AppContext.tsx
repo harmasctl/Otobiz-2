@@ -21,23 +21,25 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
-        setUser(session.user);
-      } else {
-        setUser(null);
-      }
-      setIsLoading(false);
-    });
-
     // Initial session check
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         setUser(session.user);
       }
       setIsLoading(false);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN") {
+        setUser(session?.user ?? null);
+        setShowAuthModal(false);
+      } else if (event === "SIGNED_OUT") {
+        setUser(null);
+        setShowAuthModal(false);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -52,6 +54,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       setUser(null);
+      setShowAuthModal(false);
     } catch (error) {
       console.error("Logout failed:", error);
       throw error;
